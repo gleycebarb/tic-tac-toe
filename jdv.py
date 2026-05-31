@@ -1,3 +1,6 @@
+import random
+
+
 tabuleiro = [" ", " ", " ", 
              " ", " ", " ", 
              " ", " ", " "]
@@ -39,22 +42,38 @@ def verificacao_empate():
 while True: 
     exibir_tabuleiro()
 
-    posicao = int(input(f"jogador {jogador}, escolha uma posição de 1 à 9:")) - 1
-    
-    if tabuleiro[posicao] == " ":
+    if jogador == "x":
+        posicao = int(input(f"jogador {jogador}, escolha uma posição de 1 à 9: ")) - 1
+
+        if posicao < 0 or posicao > 8:
+            print("Posição inválida.")
+            continue
+
+        if tabuleiro[posicao] != " ":
+            print("essa posição já está ocupada :(")
+            continue
+
         tabuleiro[posicao] = jogador
     else:
-        print("essa posição já está ocupada :(")
-        continue
-    
+        print("computador jogando, aguarde um momento...")
+        posicoes_disponiveis = [i for i, v in enumerate(tabuleiro) if v == " "]
+        if posicoes_disponiveis:
+            posicao = random.choice(posicoes_disponiveis)
+            tabuleiro[posicao] = jogador
+
     if verificacao_vitorias():
         exibir_tabuleiro()
-        print(f"jogador {jogador} venceu:)")
+
+        if jogador == "x":
+            print("Você venceu :)")
+        else:
+            print("O computador venceu :(")
+
         break
+
     if verificacao_empate():
         exibir_tabuleiro()
-        print("empate:/")
-    if jogador == "x":
-        jogador == "o"
-    else:
-        jogador = "x"
+        print("Empate :/")
+        break
+
+    jogador = "o" if jogador == "x" else "x"
